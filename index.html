@@ -575,6 +575,15 @@
             "Every exam question answered is a step closer to your goal.",
             "Focus. Review. Stick. Repeat."
         ];
+        
+        // --- HELPER: SHUFFLE ARRAY (RAMBLE) ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
         // --- AUTH & LOGIC ---
         const loginEmail = document.getElementById('inp-email');
@@ -898,9 +907,16 @@
                     else if (detected === selectedCategory) isMatch = true;
 
                     if (isMatch) {
+                        // --- START UPDATE: SHUFFLE LOGIC ---
+                        // Create a copy of options to shuffle
+                        let shuffledOpts = [...data.options];
+                        shuffleArray(shuffledOpts); // Randomize order
+                        // --- END UPDATE ---
+
                         tempQuestions.push({ 
                             id: doc.id, 
                             ...data, 
+                            options: shuffledOpts, // Use randomized options
                             detectedCategory: detected 
                         });
                     }
@@ -1010,8 +1026,13 @@
             let selectedText = "";
 
             if (selectedIdx >= 0 && btnElement) {
+                // The text content of the button includes the Key (A, B...) so we need to be careful
+                // InnerText might be "A OptionText". 
+                // We compare against q.correct which is the raw string from DB.
                 selectedText = btnElement.innerText.substring(2).trim(); 
                 
+                // Logic: Does the selected text match the correct answer string?
+                // Or does the correct answer string exist inside the selected option?
                 if (q.options[selectedIdx] === q.correct || selectedText.includes(q.correct) || q.correct.includes(q.options[selectedIdx])) {
                     isCorrect = true;
                 } else {
@@ -1029,6 +1050,7 @@
 
             // HIGHLIGHT CORRECT ANSWER ALWAYS
             buttons.forEach((b, idx) => {
+                // Since q.options is shuffled, q.options[idx] corresponds to button[idx]
                 if(q.options[idx] === q.correct || b.innerText.includes(q.correct)) {
                     b.classList.add('choice-correct');
                 }
