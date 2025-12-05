@@ -98,7 +98,7 @@
         .btn { 
             padding: 12px 24px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; 
             transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem;
-            position: relative; overflow: hidden; user-select: none;
+            position: relative; overflow: hidden; user-select: none; text-decoration: none;
         }
         .btn:active { transform: scale(0.96); }
         .btn-primary { 
@@ -284,18 +284,33 @@
 
         <div id="form-register" class="card auth-card hidden">
             <h2 style="text-align: center; margin-bottom: 5px; color: var(--success);">REGISTER</h2>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Step 1: Send GCash Payment</p>
-             <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Subscription: ₱ 299</p>
-            <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; border: 1px dashed var(--success); margin-bottom: 20px;">
-                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--success); font-weight: bold;">Send to GCash</div>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 15px; font-size: 0.9rem;">Step 1: Choose Payment Method</p>
+            
+            <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; border: 1px dashed var(--success); margin-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--success); font-weight: bold;">GCash</span>
+                    <span style="font-weight: bold; color: white;">₱ 499.00</span>
+                </div>
                 <div style="font-size: 1.2rem; font-family: var(--font-mono); color: white; margin: 5px 0;">0948 374 8304</div>
                 <div style="font-size: 0.8rem; color: var(--text-muted);">Name: A...LO</div>
             </div>
 
+            <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 8px; border: 1px dashed var(--primary); margin-bottom: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                     <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--primary); font-weight: bold;"><i class='bx bxl-paypal'></i> PayPal</span>
+                     <span style="font-weight: bold; color: white;">$ 10.00</span>
+                </div>
+                <a href="https://www.paypal.me/gelocutler12" target="_blank" class="btn btn-primary" style="width: 100%; height: auto; padding: 8px 12px; font-size: 0.8rem; text-decoration: none;">
+                    Pay via PayPal <i class='bx bx-link-external'></i>
+                </a>
+            </div>
+
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 15px; font-size: 0.9rem;">Step 2: Enter Details</p>
+
             <div class="input-group">
-                <label class="input-label">Payment Sender Details</label>
-                <input type="text" id="reg-sender-name" class="input" placeholder="GCash Sender Name" style="margin-bottom: 10px;">
-                <input type="number" id="reg-sender-num" class="input" placeholder="GCash Sender Number (09...)" style="margin-bottom: 10px;">
+                <label class="input-label">Payment Details</label>
+                <input type="text" id="reg-sender-name" class="input" placeholder="Sender Name" style="margin-bottom: 10px;">
+                <input type="number" id="reg-sender-num" class="input" placeholder="Sender Number (09...)" style="margin-bottom: 10px;">
             </div>
 
             <div class="input-group">
@@ -346,7 +361,7 @@
 
     <div id="view-intro" class="hidden">
         <div id="intro-msg" class="scale-up" style="text-align: center;">
-            <i class='bx bxs-badge-check' style="font-size: 5rem; color: var(--success); margin-bottom: 20px;"></i>
+            <i class='bx bxs-badge-check' style="font-size: 5rem; color: var(--success); margin-bottom: 20px; opacity:0.9;"></i>
             <h1 style="font-size: 2rem; margin-bottom: 10px; color: white;">SUBSCRIPTION ACTIVATED</h1>
             <p style="font-size: 1.2rem; color: var(--primary); font-family: var(--font-mono);">PREMIUM ACCESS: 90 DAYS</p>
         </div>
@@ -575,15 +590,6 @@
             "Every exam question answered is a step closer to your goal.",
             "Focus. Review. Stick. Repeat."
         ];
-        
-        // --- HELPER: SHUFFLE ARRAY (RAMBLE) ---
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
 
         // --- AUTH & LOGIC ---
         const loginEmail = document.getElementById('inp-email');
@@ -899,7 +905,6 @@
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    // APPLYING NEW CATEGORY LOGIC
                     const detected = getCategory(data.category); 
                     
                     let isMatch = false;
@@ -907,16 +912,17 @@
                     else if (detected === selectedCategory) isMatch = true;
 
                     if (isMatch) {
-                        // --- START UPDATE: SHUFFLE LOGIC ---
-                        // Create a copy of options to shuffle
+                        // --- SHUFFLE LOGIC INTEGRATED HERE ---
                         let shuffledOpts = [...data.options];
-                        shuffleArray(shuffledOpts); // Randomize order
-                        // --- END UPDATE ---
+                        for (let i = shuffledOpts.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [shuffledOpts[i], shuffledOpts[j]] = [shuffledOpts[j], shuffledOpts[i]];
+                        }
 
                         tempQuestions.push({ 
                             id: doc.id, 
                             ...data, 
-                            options: shuffledOpts, // Use randomized options
+                            options: shuffledOpts, // Use shuffled
                             detectedCategory: detected 
                         });
                     }
@@ -1026,13 +1032,8 @@
             let selectedText = "";
 
             if (selectedIdx >= 0 && btnElement) {
-                // The text content of the button includes the Key (A, B...) so we need to be careful
-                // InnerText might be "A OptionText". 
-                // We compare against q.correct which is the raw string from DB.
                 selectedText = btnElement.innerText.substring(2).trim(); 
                 
-                // Logic: Does the selected text match the correct answer string?
-                // Or does the correct answer string exist inside the selected option?
                 if (q.options[selectedIdx] === q.correct || selectedText.includes(q.correct) || q.correct.includes(q.options[selectedIdx])) {
                     isCorrect = true;
                 } else {
@@ -1050,7 +1051,6 @@
 
             // HIGHLIGHT CORRECT ANSWER ALWAYS
             buttons.forEach((b, idx) => {
-                // Since q.options is shuffled, q.options[idx] corresponds to button[idx]
                 if(q.options[idx] === q.correct || b.innerText.includes(q.correct)) {
                     b.classList.add('choice-correct');
                 }
@@ -1150,7 +1150,6 @@
         // --- UPDATED STATS UI ---
         window.loadStatsUI = () => {
             const stats = userStats; 
-            // UPDATED CATEGORIES: ICD, CPT, and ALL (Mixed)
             const cats = ['ICD', 'CPT', 'ALL'];
             
             const welcomeTitle = document.querySelector('.welcome-banner h2');
@@ -1206,18 +1205,10 @@
             }
         };
 
-        // --- UPDATED CATEGORY LOGIC ---
         function getCategory(rawCategory) {
-            if (!rawCategory) return 'CPT'; // Default fallback
-
+            if (!rawCategory) return 'CPT'; 
             const cat = rawCategory.trim().toUpperCase();
-
-            // Logic: If it mentions ICD or Diagnosis, it is ICD.
-            // Everything else (Surgery, Radiology, E/M) is treated as CPT.
-            if(cat.includes("ICD") || cat.includes("DIAGNOSIS")) {
-                return "ICD";
-            }
-
+            if(cat.includes("ICD") || cat.includes("DIAGNOSIS")) return "ICD";
             return "CPT"; 
         }
     </script>
