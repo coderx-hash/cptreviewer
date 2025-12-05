@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>CPT Master | Medical Coding Reviewer</title>
+    <title>Master Coder | ICD-10 & CPT Reviewer</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,18 +15,17 @@
     <style>
         :root {
             /* THEME PALETTE */
-            --bg-deep: #0f172a;            
-            --bg-surface: #1e293b;        
-            --primary: #3b82f6;           /* Blue */
+            --bg-deep: #0f172a;             
+            --bg-surface: #1e293b;         
+            --primary: #3b82f6;            /* Blue for CPT */
             --primary-dim: rgba(59, 130, 246, 0.1);
             --primary-glow: rgba(59, 130, 246, 0.4);
-            --secondary: #94a3b8;        
-            --accent: #ef4444;            /* Red */
-            --success: #10b981;           /* Green */
-            --warning: #f59e0b;           /* Orange */
-            --danger: #dc2626;            
-            --purple: #8b5cf6;            /* Purple for Radiology */
-            --pink: #ec4899;              /* Pink for Path/Lab */
+            --secondary: #94a3b8;         
+            --accent: #ef4444;             /* Red for ICD-10 */
+            --success: #10b981;            /* Green for Mix/Success */
+            --warning: #f59e0b;            
+            --danger: #dc2626;             
+            
             --text-main: #f8fafc;
             --text-muted: #cbd5e1;
             --glass-bg: rgba(30, 41, 59, 0.85);
@@ -75,6 +74,9 @@
 
         /* UTILS */
         .hidden { display: none !important; }
+        .hidden-xs { display: block; }
+        @media(max-width: 600px) { .hidden-xs { display: none; } }
+        
         .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .fade-out { animation: fadeOut 0.8s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -140,20 +142,11 @@
             box-shadow: 0 0 50px rgba(244, 63, 94, 0.2); padding: 30px;
         }
 
-        /* --- FIXED INTRO OVERLAY --- */
+        /* INTRO OVERLAY */
         #view-intro {
-            position: fixed; 
-            inset: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            z-index: 9999; 
-            background: var(--bg-deep);
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
+            position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 9999; 
+            background: var(--bg-deep); display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; text-align: center; padding: 20px;
         }
 
         /* LAYOUT */
@@ -208,7 +201,7 @@
             grid-column: 1 / -1; background: linear-gradient(180deg, rgba(59, 130, 246, 0.05), rgba(15, 23, 42, 0.6));
             display: flex; align-items: center; justify-content: space-between; padding: 30px;
         }
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
         .cat-card {
             background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 16px; padding: 15px;
             text-align: center; transition: 0.3s; cursor: default;
@@ -276,8 +269,8 @@
     <div id="view-auth" class="auth-wrapper fade-in">
         <div id="form-login" class="card auth-card">
             <div class="brand-logo"><i class='bx bxs-book-heart'></i></div>
-            <h2 style="text-align: center; margin-bottom: 5px;">CPT MASTER</h2>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Medical Coding Reviewer</p>
+            <h2 style="text-align: center; margin-bottom: 5px;">MASTER CODER</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">ICD-10 & CPT Reviewer</p>
             
             <div class="input-group"><input type="email" id="inp-email" class="input" placeholder="Enter Email"></div>
             <div class="input-group"><input type="password" id="inp-pass" class="input" placeholder="Enter Password"></div>
@@ -352,7 +345,6 @@
     </div>
 
     <div id="view-intro" class="hidden">
-        
         <div id="intro-msg" class="scale-up" style="text-align: center;">
             <i class='bx bxs-badge-check' style="font-size: 5rem; color: var(--success); margin-bottom: 20px;"></i>
             <h1 style="font-size: 2rem; margin-bottom: 10px; color: white;">SUBSCRIPTION ACTIVATED</h1>
@@ -376,14 +368,13 @@
              <h1 style="font-size: 3.5rem; font-weight: 800; color:white; margin-bottom: 10px; text-shadow: 0 0 30px rgba(59, 130, 246, 0.6);">LET'S START!</h1>
              <p style="color: var(--text-muted);">Your future awaits.</p>
         </div>
-
     </div>
 
     <div id="app-layout" class="layout hidden">
         <div class="overlay" onclick="toggleSidebar()"></div>
         
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header"><i class='bx bxs-book-heart'></i> CPT MASTER</div>
+            <div class="sidebar-header"><i class='bx bxs-book-heart'></i> MASTER CODER</div>
             <div class="nav-links">
                 <div class="nav-item active" onclick="navTo('dashboard'); toggleSidebar()"><i class='bx bxs-dashboard'></i> Dashboard</div>
                 <div class="nav-item" onclick="navTo('topics'); toggleSidebar()"><i class='bx bxs-book-content'></i> Start Review</div>
@@ -410,7 +401,7 @@
                     <div style="text-align: right;" class="hidden-xs">
                         <div id="user-name" style="font-size: 0.9rem; font-weight: 600;">Future Coder</div>
                     </div>
-                    <div style="width: 35px; height: 35px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;">CPT</div>
+                    <div style="width: 35px; height: 35px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;">MC</div>
                     <button id="btn-logout" class="btn btn-ghost" style="padding: 8px;"><i class='bx bx-power-off' style="font-size: 1.2rem;"></i></button>
                 </div>
             </header>
@@ -426,7 +417,7 @@
                     <div class="welcome-banner">
                         <div>
                             <h2 style="margin-bottom: 5px;">Welcome, Coder!</h2>
-                            <p style="color: var(--text-muted);">Master your CPT codes and pass the exam.</p>
+                            <p style="color: var(--text-muted);">Master both ICD-10 and CPT codes.</p>
                         </div>
                         <button onclick="navTo('topics')" class="btn btn-primary">Start Review <i class='bx bx-play'></i></button>
                     </div>
@@ -455,65 +446,62 @@
                     </div>
 
                     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
-                        <h4 style="font-weight: 600; font-size: 1.1rem;">CPT Category Breakdown</h4>
+                        <h4 style="font-weight: 600; font-size: 1.1rem;">Category Breakdown</h4>
                         <button onclick="resetStats()" class="btn btn-ghost" style="font-size: 0.75rem; padding: 6px 12px;"><i class='bx bx-reset'></i> Reset History</button>
                     </div>
 
-                    <div class="category-grid">
-                        <div class="cat-card"><div class="ring-container"><svg class="ring-svg"><circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle><circle id="ring-EM" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--primary);"></circle></svg><div class="ring-text" id="txt-EM">0%</div></div><div style="font-weight:700; color:var(--primary);">E/M</div><div style="font-size:0.75rem; color:var(--text-muted);">Eval & Mgmt</div></div>
-                        <div class="cat-card"><div class="ring-container"><svg class="ring-svg"><circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle><circle id="ring-ANES" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--accent);"></circle></svg><div class="ring-text" id="txt-ANES">0%</div></div><div style="font-weight:700; color:var(--accent);">Anesthesia</div><div style="font-size:0.75rem; color:var(--text-muted);">00100-01999</div></div>
-                        <div class="cat-card"><div class="ring-container"><svg class="ring-svg"><circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle><circle id="ring-SURG" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--success);"></circle></svg><div class="ring-text" id="txt-SURG">0%</div></div><div style="font-weight:700; color:var(--success);">Surgery</div><div style="font-size:0.75rem; color:var(--text-muted);">10000-69990</div></div>
-                        <div class="cat-card"><div class="ring-container"><svg class="ring-svg"><circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle><circle id="ring-RAD" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--purple);"></circle></svg><div class="ring-text" id="txt-RAD">0%</div></div><div style="font-weight:700; color:var(--purple);">Radiology</div><div style="font-size:0.75rem; color:var(--text-muted);">70000-79999</div></div>
-                        <div class="cat-card"><div class="ring-container"><svg class="ring-svg"><circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle><circle id="ring-PATH" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--pink);"></circle></svg><div class="ring-text" id="txt-PATH">0%</div></div><div style="font-weight:700; color:var(--pink);">Path/Lab</div><div style="font-size:0.75rem; color:var(--text-muted);">80000-89999</div></div>
-                        <div class="cat-card"><div class="ring-container"><svg class="ring-svg"><circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle><circle id="ring-MED" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--warning);"></circle></svg><div class="ring-text" id="txt-MED">0%</div></div><div style="font-weight:700; color:var(--warning);">Medicine</div><div style="font-size:0.75rem; color:var(--text-muted);">90000-99999</div></div>
+                    <div class="category-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+                        
+                        <div class="cat-card">
+                            <div class="ring-container">
+                                <svg class="ring-svg">
+                                    <circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle>
+                                    <circle id="ring-ICD" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--accent);"></circle>
+                                </svg>
+                                <div class="ring-text" id="txt-ICD">0%</div>
+                            </div>
+                            <div style="font-weight:700; color:var(--accent);">ICD-10</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Diagnosis</div>
+                        </div>
+
+                        <div class="cat-card">
+                            <div class="ring-container">
+                                <svg class="ring-svg">
+                                    <circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle>
+                                    <circle id="ring-CPT" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--primary);"></circle>
+                                </svg>
+                                <div class="ring-text" id="txt-CPT">0%</div>
+                            </div>
+                            <div style="font-weight:700; color:var(--primary);">CPT</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Procedures</div>
+                        </div>
+
                     </div>
                 </div>
 
                 <div id="view-topics" class="hidden fade-in">
-                    <h2 style="margin-bottom: 20px; font-weight: 300;">Choose <span style="font-weight:800; color:var(--primary);">Category</span></h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+                    <h2 style="margin-bottom: 20px; font-weight: 300;">Choose <span style="font-weight:800; color:var(--primary);">Review Mode</span></h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                         
-                        <button onclick="selectTopic('EM')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer;">
-                            <i class='bx bxs-user-voice' style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
-                            <h3>E/M</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Evaluation & Management</p>
+                        <button onclick="selectTopic('ICD')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer; border-left: 5px solid var(--accent);">
+                            <i class='bx bxs-virus' style="font-size: 3rem; color: var(--accent); margin-bottom: 15px;"></i>
+                            <h3 style="font-size: 1.5rem;">ICD-10</h3>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">International Classification of Diseases. Diagnosis coding mastery.</p>
                         </button>
                         
-                        <button onclick="selectTopic('ANES')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer;">
-                            <i class='bx bxs-mask' style="font-size: 2.5rem; color: var(--accent); margin-bottom: 15px;"></i>
-                            <h3>Anesthesia</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">00100 - 01999</p>
+                        <button onclick="selectTopic('CPT')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer; border-left: 5px solid var(--primary);">
+                            <i class='bx bxs-book-heart' style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+                            <h3 style="font-size: 1.5rem;">CPT</h3>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Current Procedural Terminology. Procedure coding mastery.</p>
                         </button>
                         
-                        <button onclick="selectTopic('SURG')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer;">
-                            <i class='bx bxs-scalpel' style="font-size: 2.5rem; color: var(--success); margin-bottom: 15px;"></i>
-                            <h3>Surgery</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Integumentary to Auditory</p>
-                        </button>
-                        
-                        <button onclick="selectTopic('RAD')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer;">
-                            <i class='bx bxs-radiation' style="font-size: 2.5rem; color: var(--purple); margin-bottom: 15px;"></i>
-                            <h3>Radiology</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">X-Ray, MRI, CT, Ultrasound</p>
-                        </button>
-                        
-                        <button onclick="selectTopic('PATH')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer;">
-                            <i class='bx bxs-flask' style="font-size: 2.5rem; color: var(--pink); margin-bottom: 15px;"></i>
-                            <h3>Path & Lab</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Panels, Chemistry, Micro</p>
+                        <button onclick="selectTopic('ALL')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer; border: 1px solid var(--success); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(15, 23, 42, 0.8));">
+                            <i class='bx bxs-layer' style="font-size: 3rem; color: var(--success); margin-bottom: 15px;"></i>
+                            <h3 style="font-size: 1.5rem;">MIX TEST</h3>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Comprehensive Mock Exam. Random mix of ICD-10 and CPT questions.</p>
                         </button>
 
-                        <button onclick="selectTopic('MED')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer;">
-                            <i class='bx bxs-capsule' style="font-size: 2.5rem; color: var(--warning); margin-bottom: 15px;"></i>
-                            <h3>Medicine</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Vaccines, Psych, Dialysis</p>
-                        </button>
-                        
-                        <button onclick="selectTopic('ALL')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer; border-color: var(--primary);">
-                            <i class='bx bxs-layer' style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
-                            <h3>Mock Exam</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Comprehensive Mixed Test</p>
-                        </button>
                     </div>
                 </div>
 
@@ -573,7 +561,7 @@
         let nextQuestionInterval;
         let autoRedirectInterval; 
 
-        const QUESTION_TIME_LIMIT = 90; // Increased for CPC scenarios
+        const QUESTION_TIME_LIMIT = 90; 
         const NEXT_TIME_LIMIT = 5;      
 
         // --- QUOTES FOR INTRO ---
@@ -581,7 +569,7 @@
             "Precision in every code.",
             "Accuracy is the soul of medical coding.",
             "Review your guidelines, master the modifiers.",
-            "Your CPC certification is waiting. Go get it.",
+            "Your Certification is waiting. Go get it.",
             "Study hard until you can say 'I am Certified'.",
             "The right code ensures the right reimbursement.",
             "Every exam question answered is a step closer to your goal.",
@@ -902,7 +890,7 @@
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    // APPLYING USER'S REQUESTED FILTER LOGIC
+                    // APPLYING NEW CATEGORY LOGIC
                     const detected = getCategory(data.category); 
                     
                     let isMatch = false;
@@ -1137,10 +1125,11 @@
             }
         };
 
+        // --- UPDATED STATS UI ---
         window.loadStatsUI = () => {
             const stats = userStats; 
-            // UPDATED STAT CATEGORIES
-            const cats = ['EM', 'ANES', 'SURG', 'RAD', 'PATH', 'MED', 'ALL'];
+            // UPDATED CATEGORIES: ICD, CPT, and ALL (Mixed)
+            const cats = ['ICD', 'CPT', 'ALL'];
             
             const welcomeTitle = document.querySelector('.welcome-banner h2');
             const welcomeMsg = document.querySelector('.welcome-banner p');
@@ -1180,7 +1169,7 @@
                     if(c === 'ALL') {
                         document.getElementById('ans-ALL').innerText = "0";
                         welcomeTitle.innerText = "Welcome, Coder!";
-                        welcomeMsg.innerText = "Master your CPT codes and pass the exam.";
+                        welcomeMsg.innerText = "Master both ICD-10 and CPT codes.";
                     }
                 }
             });
@@ -1195,21 +1184,19 @@
             }
         };
 
-        // --- UPDATED CATEGORY LOGIC (REQUESTED FIX) ---
+        // --- UPDATED CATEGORY LOGIC ---
         function getCategory(rawCategory) {
-            if (!rawCategory) return 'MED'; // Default
+            if (!rawCategory) return 'CPT'; // Default fallback
 
             const cat = rawCategory.trim().toUpperCase();
 
-            // Explicit logic requested
-            if(cat.includes("E/M") || cat.includes("EVAL")) return "EM";
-            if(cat.includes("ANES")) return "ANES";
-            if(cat.includes("SURG")) return "SURG";
-            if(cat.includes("RAD")) return "RAD";
-            if(cat.includes("PATH") || cat.includes("LAB")) return "PATH";
-            if(cat.includes("MED")) return "MED";
+            // Logic: If it mentions ICD or Diagnosis, it is ICD.
+            // Everything else (Surgery, Radiology, E/M) is treated as CPT.
+            if(cat.includes("ICD") || cat.includes("DIAGNOSIS")) {
+                return "ICD";
+            }
 
-            return "MED"; // Catch-all for others to ensure "pumasok lahat"
+            return "CPT"; 
         }
     </script>
 </body>
