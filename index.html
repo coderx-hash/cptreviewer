@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Master Coder | ICD-10 & CPT Reviewer</title>
+    <title>Master Coder | ICD, CPT & HCPCS Reviewer</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,6 +22,7 @@
             --primary-glow: rgba(59, 130, 246, 0.4);
             --secondary: #94a3b8;         
             --accent: #ef4444;             /* Red for ICD-10 */
+            --hcpcs: #a855f7;              /* Purple for HCPCS */
             --success: #10b981;            /* Green for Mix/Success */
             --warning: #f59e0b;            
             --danger: #dc2626;             
@@ -60,6 +61,7 @@
         }
         .orb-1 { width: 300px; height: 300px; background: var(--primary); top: 10%; left: 10%; }
         .orb-2 { width: 400px; height: 400px; background: var(--accent); bottom: 10%; right: 10%; animation-delay: 1s; }
+        .orb-3 { width: 350px; height: 350px; background: var(--hcpcs); bottom: 20%; left: 40%; animation-delay: 2s; }
 
         @keyframes pulseOrb {
             0% { transform: scale(1); opacity: 0.2; }
@@ -264,13 +266,14 @@
     <div class="ambient-bg">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
     </div>
 
     <div id="view-auth" class="auth-wrapper fade-in">
         <div id="form-login" class="card auth-card">
             <div class="brand-logo"><i class='bx bxs-book-heart'></i></div>
             <h2 style="text-align: center; margin-bottom: 5px;">MASTER CODER</h2>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">ICD-10 & CPT Reviewer</p>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">ICD, CPT & HCPCS Reviewer</p>
             
             <div class="input-group"><input type="email" id="inp-email" class="input" placeholder="Enter Email"></div>
             <div class="input-group"><input type="password" id="inp-pass" class="input" placeholder="Enter Password"></div>
@@ -432,7 +435,7 @@
                     <div class="welcome-banner">
                         <div>
                             <h2 style="margin-bottom: 5px;">Welcome, Coder!</h2>
-                            <p style="color: var(--text-muted);">Master both ICD-10 and CPT codes.</p>
+                            <p style="color: var(--text-muted);">Master ICD-10, CPT & HCPCS.</p>
                         </div>
                         <button onclick="navTo('topics')" class="btn btn-primary">Start Review <i class='bx bx-play'></i></button>
                     </div>
@@ -465,7 +468,7 @@
                         <button onclick="resetStats()" class="btn btn-ghost" style="font-size: 0.75rem; padding: 6px 12px;"><i class='bx bx-reset'></i> Reset History</button>
                     </div>
 
-                    <div class="category-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+                    <div class="category-grid">
                         
                         <div class="cat-card">
                             <div class="ring-container">
@@ -491,6 +494,18 @@
                             <div style="font-size:0.75rem; color:var(--text-muted);">Procedures</div>
                         </div>
 
+                        <div class="cat-card">
+                            <div class="ring-container">
+                                <svg class="ring-svg">
+                                    <circle class="ring-circle-bg" cx="35" cy="35" r="30"></circle>
+                                    <circle id="ring-HCPCS" class="ring-circle-val" cx="35" cy="35" r="30" style="--c-color: var(--hcpcs);"></circle>
+                                </svg>
+                                <div class="ring-text" id="txt-HCPCS">0%</div>
+                            </div>
+                            <div style="font-weight:700; color:var(--hcpcs);">HCPCS</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Supplies/Drugs</div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -511,10 +526,16 @@
                             <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Current Procedural Terminology. Procedure coding mastery.</p>
                         </button>
                         
+                        <button onclick="selectTopic('HCPCS')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer; border-left: 5px solid var(--hcpcs);">
+                            <i class='bx bxs-capsule' style="font-size: 3rem; color: var(--hcpcs); margin-bottom: 15px;"></i>
+                            <h3 style="font-size: 1.5rem;">HCPCS</h3>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Level II Codes. DME, supplies, and drug coding.</p>
+                        </button>
+                        
                         <button onclick="selectTopic('ALL')" class="card" style="padding: 30px; text-align: left; transition: 0.3s; cursor:pointer; border: 1px solid var(--success); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(15, 23, 42, 0.8));">
                             <i class='bx bxs-layer' style="font-size: 3rem; color: var(--success); margin-bottom: 15px;"></i>
                             <h3 style="font-size: 1.5rem;">MIX TEST</h3>
-                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Comprehensive Mock Exam. Random mix of ICD-10 and CPT questions.</p>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Comprehensive Mock Exam. Random mix of all subjects.</p>
                         </button>
 
                     </div>
@@ -1150,7 +1171,8 @@
         // --- UPDATED STATS UI ---
         window.loadStatsUI = () => {
             const stats = userStats; 
-            const cats = ['ICD', 'CPT', 'ALL'];
+            // UPDATED: Added HCPCS to this array
+            const cats = ['ICD', 'CPT', 'HCPCS', 'ALL'];
             
             const welcomeTitle = document.querySelector('.welcome-banner h2');
             const welcomeMsg = document.querySelector('.welcome-banner p');
@@ -1190,7 +1212,7 @@
                     if(c === 'ALL') {
                         document.getElementById('ans-ALL').innerText = "0";
                         welcomeTitle.innerText = "Welcome, Coder!";
-                        welcomeMsg.innerText = "Master both ICD-10 and CPT codes.";
+                        welcomeMsg.innerText = "Master ICD, CPT & HCPCS.";
                     }
                 }
             });
@@ -1205,10 +1227,12 @@
             }
         };
 
+        // UPDATED: Category Logic
         function getCategory(rawCategory) {
             if (!rawCategory) return 'CPT'; 
             const cat = rawCategory.trim().toUpperCase();
             if(cat.includes("ICD") || cat.includes("DIAGNOSIS")) return "ICD";
+            if(cat.includes("HCPCS") || cat.includes("LEVEL II")) return "HCPCS"; // Added logic
             return "CPT"; 
         }
     </script>
