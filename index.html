@@ -910,19 +910,20 @@
             currentIndex = 0;
 
             try {
+                // Fetch more questions to increase pool logic
                 let qRef = collection(db, "questions");
-                let qQuery = query(qRef, orderBy("timestamp", "desc"), limit(300)); 
+                let qQuery = query(qRef, orderBy("timestamp", "desc"), limit(400)); 
                 
                 let querySnapshot;
                 try {
                      querySnapshot = await getDocs(qQuery);
                 } catch(e) {
                      console.log("Index missing, falling back to basic query");
-                     qQuery = query(qRef, limit(300));
+                     qQuery = query(qRef, limit(400));
                      querySnapshot = await getDocs(qQuery);
                 }
                 
-                let tempQuestions = [];
+                let allCategoryQuestions = [];
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
@@ -933,44 +934,49 @@
                     else if (detected === selectedCategory) isMatch = true;
 
                     if (isMatch) {
-                        // --- SHUFFLE LOGIC INTEGRATED HERE ---
                         let shuffledOpts = [...data.options];
                         for (let i = shuffledOpts.length - 1; i > 0; i--) {
                             const j = Math.floor(Math.random() * (i + 1));
                             [shuffledOpts[i], shuffledOpts[j]] = [shuffledOpts[j], shuffledOpts[i]];
                         }
-
-                        tempQuestions.push({ 
+                        
+                        // Structure question data
+                        allCategoryQuestions.push({ 
                             id: doc.id, 
                             ...data, 
-                            options: shuffledOpts, // Use shuffled
+                            options: shuffledOpts,
                             detectedCategory: detected 
                         });
                     }
                 });
 
-                let unAnswered = tempQuestions.filter(q => !userAnsweredIds.includes(q.id));
-
-                if (unAnswered.length === 0 && tempQuestions.length > 0) {
-                     alert("You've completed all unique questions here! We will review previous items now.");
-                     unAnswered = tempQuestions; 
-                } else if (unAnswered.length < limitCount && tempQuestions.length > 0) {
-                     const needed = limitCount - unAnswered.length;
-                     const answered = tempQuestions.filter(q => userAnsweredIds.includes(q.id));
-                     answered.sort(() => Math.random() - 0.5);
-                     unAnswered = [...unAnswered, ...answered.slice(0, needed)];
-                }
-
-                unAnswered.sort(() => Math.random() - 0.5);
+                // STRICT FILTERING: Remove answered IDs
+                let availableQuestions = allCategoryQuestions.filter(q => !userAnsweredIds.includes(q.id));
                 
-                if (unAnswered.length === 0) {
-                    alert(`No questions found for ${selectedCategory}. Check if you uploaded questions for this category.`);
-                    navTo('topics');
-                    document.getElementById('view-loading').classList.add('hidden');
-                    return;
+                // If NO questions left in this category at all
+                if (availableQuestions.length === 0) {
+                    if (allCategoryQuestions.length > 0) {
+                        // Means they finished the subject
+                        alert(`EXCELLENT! You have answered ALL questions for ${selectedCategory}. We will now enable "Review Mode" to revisit previous questions.`);
+                        // Recycle questions but DO NOT reset ID history in DB (keep stats)
+                        availableQuestions = allCategoryQuestions; 
+                    } else {
+                        // Means no questions exist in DB for this category
+                        alert(`No questions found for ${selectedCategory}. Please contact admin.`);
+                        navTo('topics');
+                        document.getElementById('view-loading').classList.add('hidden');
+                        return;
+                    }
+                } 
+                
+                // If FEWER questions than requested limit (e.g., requested 50, only 10 new left)
+                else if (availableQuestions.length < limitCount) {
+                    alert(`Note: Only ${availableQuestions.length} new questions remaining for this subject. Loading them now.`);
                 }
 
-                currentQuestions = unAnswered.slice(0, limitCount);
+                // Randomize and Slice
+                availableQuestions.sort(() => Math.random() - 0.5);
+                currentQuestions = availableQuestions.slice(0, limitCount);
 
                 document.getElementById('view-loading').classList.add('hidden');
                 navTo('quiz');
@@ -1094,12 +1100,26 @@
             updateLocalStats(statsCategory, isCorrect);
             updateLocalStats('ALL', isCorrect);
             
+            // --- CRITICAL UPDATE: SAVE PROGRESS IMMEDIATELY ---
             if (!userAnsweredIds.includes(q.id)) {
                 userAnsweredIds.push(q.id);
+                // Trigger silent save to ensure "No Repeat" persists even if they close browser now
+                saveProgressSilent();
             }
             
             startNextQuestionTimer();
         };
+
+        async function saveProgressSilent() {
+            if(currentUserUID) {
+                try {
+                    await updateDoc(doc(db, "users", currentUserUID), { 
+                        stats: userStats,
+                        answeredIds: userAnsweredIds
+                    });
+                } catch(e) { console.log("Silent save failed", e); }
+            }
+        }
 
         function startNextQuestionTimer() {
             let nextTimeLeft = NEXT_TIME_LIMIT;
